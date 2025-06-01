@@ -22,23 +22,20 @@
   </div>
   <script src="qrcode.min.js"></script>
   <script>
-    function generateQRCodes() {
-      const input = document.getElementById('numberInput').value;
-      const entries = input.split(/[,
-\s|]+/).filter(e => e.trim() !== "");
-      const container = document.getElementById('qrCodes');
-      container.innerHTML = "";
-      entries.forEach(text => {
-        const div = document.createElement("div");
-        div.className = "qr-box";
-        const canvas = document.createElement("canvas");
-        div.appendChild(canvas);
-        container.appendChild(div);
-        QRCode.toCanvas(canvas, text, { width: 150 }, function (error) {
-          if (error) console.error(error);
-        });
+  function generateQRCodes() {
+    const input = document.getElementById('numberInput').value;
+    const entries = input.split(/[,\n\s|]+/).filter(e => e.trim() !== "");
+    const container = document.getElementById('qrCodes');
+    container.innerHTML = "";
+    entries.forEach(text => {
+      const div = document.createElement("div");
+      div.className = "qr-box";
+      const canvas = document.createElement("canvas");
+      div.appendChild(canvas);
+      container.appendChild(div);
+      QRCode.toCanvas(canvas, text, { width: 150 }, function (error) {
+        if (error) console.error(error);
       });
-    }
-  </script>
-</body>
-</html>
+    });
+  }
+</script>

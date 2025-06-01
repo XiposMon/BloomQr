@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>QR Generator Online</title>
+  <title>QR Generator Offline</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body { font-family: sans-serif; margin: 20px; background: #f0f0f0; }
@@ -14,13 +14,13 @@
 </head>
 <body>
   <div id="container">
-    <h2>QR Generator Online</h2>
+    <h2>QR Generator Offline</h2>
     <textarea id="numberInput" placeholder="Pisahkan teks dengan koma, spasi, atau enter"></textarea>
     <br>
     <button onclick="generateQRCodes()">Generate</button>
     <div id="qrCodes"></div>
   </div>
-  <script <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+  <script src="qrcode.min.js"></script>
   <script>
     function generateQRCodes() {
       const input = document.getElementById('numberInput').value;

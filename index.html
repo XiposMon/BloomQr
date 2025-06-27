@@ -36,18 +36,18 @@
         }
         h1 {
             margin-top: 20px;
-            text-align: center;
+            text-align: left;
             font-weight: 700;
             letter-spacing: 1px;
-            color: #296fff;
+            color: #000;
             font-size: 2.2rem;
             display: flex;
-            align-items: center;
+            align-items: left;
             justify-content: center;
             gap: 14px;
         }
         .subtitle {
-            color: #22bbff;
+            color: #FFD600;
             font-size: 1.06rem;
             margin-bottom: 18px;
             text-align: center;
@@ -172,13 +172,13 @@
     </style>
 </head>
 <body>
-    <h1><i class="ri-flashlight-fill"></i> KodeKeren</h1>
+    <h1><i class="ri-flashlight-fill"></i> 🌟PLU TO BARCODE🌟</h1>
     <div class="subtitle">
         Buat QR Code & Barcode kece dari satu atau banyak data.<br>
-        <span style="color:#ff80b2;font-weight:600;">Pisahkan data pakai spasi, enter, atau koma.</span>
+        <span style="color:#0000;font-weight:600;">Pisahkan data pakai spasi, enter, atau koma.</span>
     </div>
     <div class="container">
-        <textarea id="inputarea" placeholder="Tulis nomor, username, link, dll&#10;misal: ig:arssmiy2, 081234, https://tiktok.com/yourname"></textarea>
+        <textarea id="inputarea" placeholder="support kami agar terus berinovasi"></textarea>
         <div class="options">
             <label><input type="checkbox" id="opt-qr" checked> <i class="ri-qr-code-fill icon-qr"></i>QR Code</label>
             <label><input type="checkbox" id="opt-barcode" checked> <i class="ri-barcode-box-fill icon-barcode"></i>Barcode</label>
@@ -188,7 +188,7 @@
         </button>
         <div id="output"></div>
     </div>
-    <div class="footer">by KodeKeren &bull; <span style="color:#fff7">Versi Anak Muda</span></div>
+    <div class="footer">by EITERNITY; <span style="color:#fff7">Versi Anak Muda</span></div>
     <script>
         function parseInput(text) {
             let parts = text.split(/[\s,\n]+/);
@@ -237,7 +237,7 @@
                     setTimeout(() => {
                         JsBarcode("#"+barId, data, {
                             format: "CODE128",
-                            lineColor: "#296fff",
+                            lineColor: "#000",
                             width: 2.1,
                             height: 56,
                             displayValue: true,

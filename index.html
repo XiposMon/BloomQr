@@ -1,41 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>QR Generator Offline</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: sans-serif; margin: 20px; background: #f0f0f0; }
-    #container { background: #fff; padding: 20px; border-radius: 12px; max-width: 600px; margin: auto; }
-    textarea { width: 100%; height: 100px; font-size: 1rem; margin-bottom: 10px; }
-    button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 6px; }
-    .qr-box { margin: 10px; background: #e0e0e0; padding: 10px; display: inline-block; }
-  </style>
+    <meta charset="UTF-8">
+    <title>KodeKeren: QR & Barcode Generator Kekinian</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <!-- JsBarcode -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Icon: Remixicon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(120deg, #41e2e2 0%, #5b8df6 100%);
+            color: #23272f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 24px;
+            margin-top: 36px;
+            padding: 28px 22px 30px 22px;
+            box-shadow: 0 6px 30px #2e91e015;
+            max-width: 410px;
+            width: 95vw;
+        }
+        h1 {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #296fff;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+        .subtitle {
+            color: #22bbff;
+            font-size: 1.06rem;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            min-height: 66px;
+            border: 2px solid #6fd3fd;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 1.15rem;
+            font-family: 'Poppins', Arial, sans-serif;
+            outline: none;
+            margin-bottom: 14px;
+            background: #f7fbff;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        textarea:focus {
+            border-color: #296fff;
+        }
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            font-size: 1rem;
+            cursor: pointer;
+            user-select: none;
+            color: #218cb4;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        input[type=checkbox] {
+            accent-color: #27c1fd;
+            width: 18px;
+            height: 18px;
+        }
+        .generate-btn {
+            width: 100%;
+            padding: 12px 0;
+            background: linear-gradient(90deg, #296fff 60%, #4de3e3 100%);
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.12rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 16px #2e91e022;
+            transition: background 0.2s, transform 0.08s;
+        }
+        .generate-btn:active {
+            background: linear-gradient(90deg, #1a4db9 60%, #41baba 100%);
+            transform: scale(0.97);
+        }
+        #output {
+            margin-top: 14px;
+            width: 100%;
+        }
+        .output-group {
+            margin: 0 auto 26px auto;
+            background: #f4fbff;
+            border-radius: 17px;
+            padding: 16px 12px 18px 12px;
+            box-shadow: 0 2px 12px #26b0ff0a;
+            animation: pop-in 0.5s cubic-bezier(.5,1.8,.6,1.3);
+            max-width: 320px;
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.92) translateY(30px); opacity: 0.1; }
+            60% { transform: scale(1.04) translateY(-4px); opacity: 1; }
+            100% { transform: scale(1) translateY(0); }
+        }
+        .code-label {
+            margin: 0 0 10px 0;
+            font-size: 1.05rem;
+            color: #3c5dfb;
+            letter-spacing: 0.5px;
+        }
+        .icon-barcode, .icon-qr {
+            color: #27c1fd;
+            font-size: 1.3em;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        .code-box {
+            margin-bottom: 9px;
+        }
+        .label {
+            color: #ff80b2;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 8px 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        svg {
+            margin: 0 auto;
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 14px 2vw 18px 2vw; }
+            .output-group { max-width: 97vw; }
+        }
+        .footer {
+            color: #fff;
+            font-size: 1.08rem;
+            margin: 38px auto 0 auto;
+            letter-spacing: 1px;
+            opacity: 0.63;
+            text-align: center;
+            text-shadow: 0 2px 8px #0cb3c34d;
+        }
+        /* Hide scroll bar for modern browser */
+        ::-webkit-scrollbar {width: 8px; background: #e8f4fc;}
+        ::-webkit-scrollbar-thumb {background: #e1e8f4; border-radius: 6px;}
+    </style>
 </head>
 <body>
-  <div id="container">
-    <h2>QR Generator Offline</h2>
-    <textarea id="numberInput" placeholder="Pisahkan teks dengan koma, spasi, atau enter"></textarea>
-    <br>
-    <button onclick="generateQRCodes()">Generate</button>
-    <div id="qrCodes"></div>
-  </div>
-  <script src="qrcode.min.js"></script>
-  <script>
-  function generateQRCodes() {
-    const input = document.getElementById('numberInput').value;
-    const entries = input.split(/[,\n\s|]+/).filter(e => e.trim() !== "");
-    const container = document.getElementById('qrCodes');
-    container.innerHTML = "";
-    entries.forEach(text => {
-      const div = document.createElement("div");
-      div.className = "qr-box";
-      const canvas = document.createElement("canvas");
-      div.appendChild(canvas);
-      container.appendChild(div);
-      QRCode.toCanvas(canvas, text, { width: 150 }, function (error) {
-        if (error) console.error(error);
-      });
-    });
-  }
-</script>
+    <h1><i class="ri-flashlight-fill"></i> KodeKeren</h1>
+    <div class="subtitle">
+        Buat QR Code & Barcode kece dari satu atau banyak data.<br>
+        <span style="color:#ff80b2;font-weight:600;">Pisahkan data pakai spasi, enter, atau koma.</span>
+    </div>
+    <div class="container">
+        <textarea id="inputarea" placeholder="Tulis nomor, username, link, dll&#10;misal: ig:arssmiy2, 081234, https://tiktok.com/yourname"></textarea>
+        <div class="options">
+            <label><input type="checkbox" id="opt-qr" checked> <i class="ri-qr-code-fill icon-qr"></i>QR Code</label>
+            <label><input type="checkbox" id="opt-barcode" checked> <i class="ri-barcode-box-fill icon-barcode"></i>Barcode</label>
+        </div>
+        <button class="generate-btn" id="generate">
+            <i class="ri-magic-fill"></i> Buat Kode
+        </button>
+        <div id="output"></div>
+    </div>
+    <div class="footer">by KodeKeren &bull; <span style="color:#fff7">Versi Anak Muda</span></div>
+    <script>
+        function parseInput(text) {
+            let parts = text.split(/[\s,\n]+/);
+            parts = parts.map(s => s.trim()).filter(Boolean);
+            return parts;
+        }
+
+        function generateCodes() {
+            let text = $('#inputarea').val();
+            let wantQR = $('#opt-qr').is(':checked');
+            let wantBar = $('#opt-barcode').is(':checked');
+            let dataArr = parseInput(text);
+
+            $('#output').empty();
+
+            if (!wantQR && !wantBar) {
+                $('#output').append('<div class="output-group" style="color:#ff2c70;font-weight:600">Pilih minimal satu jenis kode!</div>');
+                return;
+            }
+            if (dataArr.length === 0) {
+                $('#output').append('<div class="output-group" style="color:#e5842c;font-weight:600">Isi minimal satu data ya!</div>');
+                return;
+            }
+
+            dataArr.forEach(function(data, idx) {
+                let $group = $('<div class="output-group"></div>');
+                $group.append(`<div class="code-label"> <i class="ri-hashtag"></i> <span>${data}</span></div>`);
+
+                if (wantQR) {
+                    let qrId = 'qr_' + idx + '_' + Date.now();
+                    $group.append(`<div class="label"><i class="ri-qr-code-fill icon-qr"></i>QR Code</div>`);
+                    $group.append(`<div class="code-box" id="${qrId}"></div>`);
+                    setTimeout(() => {
+                        new QRCode(document.getElementById(qrId), {
+                            text: data,
+                            width: 144,
+                            height: 144
+                        });
+                    }, 5);
+                }
+
+                if (wantBar) {
+                    let barId = 'bar_' + idx + '_' + Date.now();
+                    $group.append(`<div class="label"><i class="ri-barcode-box-fill icon-barcode"></i>Barcode</div>`);
+                    $group.append(`<svg class="code-box" id="${barId}"></svg>`);
+                    setTimeout(() => {
+                        JsBarcode("#"+barId, data, {
+                            format: "CODE128",
+                            lineColor: "#296fff",
+                            width: 2.1,
+                            height: 56,
+                            displayValue: true,
+                            fontSize: 13
+                        });
+                    }, 10);
+                }
+
+                $('#output').append($group);
+            });
+        }
+
+        $('#generate').on('click', generateCodes);
+        $('#inputarea').on('keydown', function(e){
+            if(e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateCodes();
+            }
+        });
+    </script>
+</body>
+</html>
